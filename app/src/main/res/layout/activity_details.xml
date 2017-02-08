@@ -43,7 +43,7 @@
                 android:layout_marginStart="56dp"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 tools:text="Primary Text" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_marginStart="56dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 tools:text="SecondaryText" />
 
         </RelativeLayout>
