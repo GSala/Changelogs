@@ -83,7 +83,7 @@ public class PackageService extends IntentService {
         Observable.zip(
                 Observable.just(packageInfo),
                 changelogObservable,
-                (pi, c) -> new PackageUpdate(pi.packageName, pi.versionName, new Date(), c))
+                (pi, c) -> new PackageUpdate(pi.packageName, pi.versionName, new Date(pi.lastUpdateTime), c))
                 .subscribe(this::saveUpdate);
     }
 
