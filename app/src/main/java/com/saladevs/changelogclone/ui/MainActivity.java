@@ -2,6 +2,7 @@ package com.saladevs.changelogclone.ui;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,7 +17,10 @@ import com.saladevs.changelogclone.R;
 import com.saladevs.changelogclone.ui.details.DetailsActivity;
 import com.saladevs.changelogclone.utils.PackageUtils;
 
+import org.javatuples.Triplet;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
@@ -47,12 +51,19 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setItemIconTintList(null);
         Menu mNavigationMenu = navigationView.getMenu();
         PackageUtils.getPackageList()
-                .subscribe(pi -> addNavigationItem(mNavigationMenu, pi));
+                .map(pi -> new Triplet<>(pi, PackageUtils.getAppLabel(pi), PackageUtils.getAppIconDrawable(pi)))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(pi -> {
+                    if (mNavigationMenu != null) {
+                        addNavigationItem(mNavigationMenu, pi.getValue0(), pi.getValue1(), pi.getValue2());
+                    }
+                });
     }
 
-    private void addNavigationItem(Menu menu, PackageInfo pi) {
-        menu.add(PackageUtils.getAppLabel(pi))
-                .setIcon(PackageUtils.getAppIconDrawable(pi)) // TODO -  onCreate Bottleneck
+    private void addNavigationItem(Menu menu, PackageInfo pi, CharSequence label, Drawable icon) {
+        menu.add(label)
+                .setIcon(icon)
                 .setOnMenuItemClickListener(menuItem -> {
                     DetailsActivity.startWith(MainActivity.this, pi);
                     return true;
