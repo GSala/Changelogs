@@ -13,7 +13,7 @@
     <string name="cant_open_app">Can\'t open this app</string>
     <string name="action_open_app">Open app</string>
     <string name="title_details">Update history</string>
-    <string name="empty_state_message">Changelogs will show when you receive updates</string>
+    <string name="empty_state_message"></string>
     <string name="menu_style">Style</string>
     <string name="style_none">None</string>
     <string name="style_short">Short</string>

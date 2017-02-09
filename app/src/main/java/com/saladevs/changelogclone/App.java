@@ -4,6 +4,7 @@ import android.content.Context;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import jonathanfinerty.once.Once;
 import timber.log.Timber;
 
 
@@ -28,5 +29,7 @@ public class App extends android.app.Application {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
+
+        Once.initialise(this);
     }
 }

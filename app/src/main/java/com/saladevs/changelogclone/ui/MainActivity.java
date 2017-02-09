@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,15 +14,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.saladevs.changelogclone.BuildConfig;
+import com.saladevs.changelogclone.PackageService;
 import com.saladevs.changelogclone.R;
 import com.saladevs.changelogclone.ui.details.DetailsActivity;
 import com.saladevs.changelogclone.utils.PackageUtils;
 
 import org.javatuples.Triplet;
 
+import jonathanfinerty.once.Once;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String FIRST_TIME_FETCHING = "firstTimeFetching";
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -39,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView = (NavigationView) findViewById(R.id.navigation);
         setUpNavigationView(mNavigationView);
 
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, FIRST_TIME_FETCHING)) {
+            PackageUtils.getPackageList()
+                    .sorted((pi1, pi2) -> Long.compare(pi2.lastUpdateTime, pi1.lastUpdateTime))
+                    .subscribe(pi -> PackageService.startActionFetchUpdate(this, pi.packageName));
+            Snackbar.make(mToolbar, "Loading latest changes", Snackbar.LENGTH_LONG).show();
+            Once.markDone(FIRST_TIME_FETCHING);
+        }
     }
 
     private void setUpToolbar(Toolbar toolbar) {
