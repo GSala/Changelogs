@@ -38,10 +38,13 @@ android {
             buildConfigField 'String', 'API_KEY', ReleaseApiKey
             buildConfigField 'String', 'API_BASE_URL', ProductionApiUrl
             signingConfig signingConfigs.release
+            resValue "string", "app_name", "Changes"
         }
         debug {
             buildConfigField 'String', 'API_KEY', DebugApiKey
             buildConfigField 'String', 'API_BASE_URL', DevelopmentApiUrl
+            resValue "string", "app_name", "Changes Debug"
+            applicationIdSuffix ".debug"
         }
     }
 }
