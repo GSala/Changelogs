@@ -40,6 +40,7 @@
             android:id="@+id/support"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="web"
             android:lineSpacingExtra="6dp"
             android:textColor="@color/textSecondary"
             android:textIsSelectable="true"
