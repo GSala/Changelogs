@@ -18,5 +18,6 @@
     <string name="style_basic">Basic</string>
     <string name="style_short">Short</string>
     <string name="style_full">Full</string>
+    <string name="action_show_info">Show application info</string>
 
 </resources>

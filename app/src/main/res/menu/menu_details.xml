@@ -3,14 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_open_info"
+        android:icon="@drawable/ic_info_white_24dp"
+        android:orderInCategory="10"
+        android:title="@string/action_show_info"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_open_app"
         android:icon="@drawable/ic_open_app_white_24dp"
+        android:orderInCategory="20"
         android:title="@string/action_open_app"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_open_store"
         android:icon="@drawable/ic_shop_white_24dp"
+        android:orderInCategory="30"
         android:title="@string/action_open_play_store"
         app:showAsAction="always" />
 

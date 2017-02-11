@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,8 @@ import com.saladevs.changelogclone.R;
 import com.saladevs.changelogclone.model.PackageUpdate;
 
 import java.util.List;
+
+import static android.service.notification.Condition.SCHEME;
 
 public class DetailsFragment extends Fragment implements DetailsMvpView {
 
@@ -102,6 +105,9 @@ public class DetailsFragment extends Fragment implements DetailsMvpView {
             case R.id.action_open_store:
                 startPlayStoreActivity(mPackageInfo.packageName);
                 return true;
+            case R.id.action_open_info:
+                startPackageInfoActivity(mPackageInfo.packageName);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -118,6 +124,13 @@ public class DetailsFragment extends Fragment implements DetailsMvpView {
             i.addCategory(Intent.CATEGORY_LAUNCHER);
             startActivity(i);
         }
+    }
+
+    private void startPackageInfoActivity(String packageName) {
+        Intent i = new Intent();
+        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        i.setData(Uri.fromParts("package", packageName, null));
+        startActivity(i);
     }
 
     @Override
