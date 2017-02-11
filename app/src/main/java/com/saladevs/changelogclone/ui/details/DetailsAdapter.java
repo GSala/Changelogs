@@ -3,6 +3,7 @@ package com.saladevs.changelogclone.ui.details;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.util.SortedListAdapterCallback;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +73,10 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
             holder.subtitle.setText(update.getVersion());
         }
         holder.title.setText(DateUtils.formatDateTime(App.getContext(), update.getDate().getTime(), 0));
-        if (update.getDescription() != null) {
+        if (TextUtils.isEmpty(update.getDescription())) {
+            holder.support.setVisibility(View.GONE);
+        } else {
+            holder.support.setVisibility(View.VISIBLE);
             holder.support.setText(update.getDescription());
         }
 

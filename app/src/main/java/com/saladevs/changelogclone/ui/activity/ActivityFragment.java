@@ -97,8 +97,8 @@ public class ActivityFragment extends Fragment implements ActivityMvpView, Activ
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_changelog_style_none:
-                mPresenter.onChangelogStyleSelected(ActivityAdapter.CHANGELOG_STYLE_NONE);
+            case R.id.action_changelog_style_basic:
+                mPresenter.onChangelogStyleSelected(ActivityAdapter.CHANGELOG_STYLE_BASIC);
                 return true;
             case R.id.action_changelog_style_short:
                 mPresenter.onChangelogStyleSelected(ActivityAdapter.CHANGELOG_STYLE_SHORT);

@@ -15,7 +15,7 @@
     <string name="title_details">Update history</string>
     <string name="empty_state_message"></string>
     <string name="menu_style">Style</string>
-    <string name="style_none">None</string>
+    <string name="style_basic">Basic</string>
     <string name="style_short">Short</string>
     <string name="style_full">Full</string>
 

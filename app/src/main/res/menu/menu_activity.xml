@@ -8,8 +8,8 @@
         app:showAsAction="never">
         <menu>
             <item
-                android:id="@+id/action_changelog_style_none"
-                android:title="@string/style_none" />
+                android:id="@+id/action_changelog_style_basic"
+                android:title="@string/style_basic" />
             <item
                 android:id="@+id/action_changelog_style_short"
                 android:title="@string/style_short" />

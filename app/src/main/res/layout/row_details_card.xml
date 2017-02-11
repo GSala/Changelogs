@@ -31,7 +31,6 @@
             android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:textColor="@color/textSecondary"
             android:textSize="14sp"
             tools:text="v5.2.3" />
@@ -40,6 +39,7 @@
             android:id="@+id/support"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:autoLink="web"
             android:lineSpacingExtra="6dp"
             android:textColor="@color/textSecondary"

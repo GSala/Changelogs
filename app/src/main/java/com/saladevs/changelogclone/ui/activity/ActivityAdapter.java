@@ -27,7 +27,7 @@ class ActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
     private static final int TYPE_UPDATE = 1;
     private static final int TYPE_HEADER = 2;
 
-    static final int CHANGELOG_STYLE_NONE = 0;
+    static final int CHANGELOG_STYLE_BASIC = 0;
     static final int CHANGELOG_STYLE_SHORT = 1;
     static final int CHANGELOG_STYLE_FULL = 2;
 
@@ -180,19 +180,16 @@ class ActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
             icon.setImageDrawable(appIcon);
             description.setText(update.getDescription());
 
-            switch (changelogStyle) {
-                case CHANGELOG_STYLE_NONE:
-                    description.setVisibility(View.GONE);
-                    break;
-                case CHANGELOG_STYLE_SHORT:
-                    description.setMaxLines(3);
-                    description.setEllipsize(TextUtils.TruncateAt.END);
-                    description.setVisibility(View.VISIBLE);
-                    break;
-                case CHANGELOG_STYLE_FULL:
-                    description.setMaxLines(Integer.MAX_VALUE);
-                    description.setVisibility(View.VISIBLE);
-                    break;
+
+            if (changelogStyle == CHANGELOG_STYLE_BASIC || TextUtils.isEmpty(update.getDescription())) {
+                description.setVisibility(View.GONE);
+            } else if (changelogStyle == CHANGELOG_STYLE_SHORT){
+                description.setMaxLines(3);
+                description.setEllipsize(TextUtils.TruncateAt.END);
+                description.setVisibility(View.VISIBLE);
+            } else {
+                description.setMaxLines(Integer.MAX_VALUE);
+                description.setVisibility(View.VISIBLE);
             }
         }
     }
