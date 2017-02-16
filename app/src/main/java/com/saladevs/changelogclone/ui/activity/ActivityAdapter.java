@@ -185,7 +185,6 @@ class ActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
                 description.setVisibility(View.GONE);
             } else if (changelogStyle == CHANGELOG_STYLE_SHORT){
                 description.setMaxLines(3);
-                description.setEllipsize(TextUtils.TruncateAt.END);
                 description.setVisibility(View.VISIBLE);
             } else {
                 description.setMaxLines(Integer.MAX_VALUE);
