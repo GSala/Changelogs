@@ -15,6 +15,7 @@ import com.saladevs.changelogclone.R;
 import com.saladevs.changelogclone.model.PackageUpdate;
 import com.saladevs.changelogclone.utils.PackageUtils;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +50,7 @@ class ActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
         // Notify item changed for every PackageUpdate row
         Observable.range(0, getItemCount())
                 .filter(i -> !mHeaders.containsKey(i))
-                .subscribe(this::notifyItemChanged);
+                .subscribe(i -> notifyItemChanged(i, style));
     }
 
     private Map<Integer, String> extractHeaders(List<PackageUpdate> updates) {
@@ -85,16 +86,52 @@ class ActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
         return null;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        onBindViewHolder(holder, position, Collections.emptyList());
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
         switch (holder.getItemViewType()) {
             case TYPE_HEADER:
                 ((HeaderViewHolder) holder).bindTo(mHeaders.get(position));
                 break;
             case TYPE_UPDATE:
-                ((UpdateViewHolder) holder).bindTo(mDataset.get(getDatasetPosition(position)), this, mChangelogStyle);
+                bindUpdateViewHolder((UpdateViewHolder) holder, position, payloads);
                 break;
+        }
+    }
+
+    private void bindUpdateViewHolder(UpdateViewHolder holder, int position, List payloads) {
+        PackageUpdate update = mDataset.get(getDatasetPosition(position));
+
+        if (payloads.isEmpty()) {
+            PackageInfo packageInfo = PackageUtils.getPackageInfo(update.getPackageName());
+
+            CharSequence appName = PackageUtils.getAppLabel(packageInfo);
+            Drawable appIcon = PackageUtils.getAppIconDrawable(packageInfo);
+
+            // Save position in tag and set onClickListener
+            holder.root.setTag(packageInfo);
+            holder.root.setOnClickListener(this);
+
+            // Replace contents of the view
+            holder.primaryText.setText(appName);
+            holder.secondaryText.setText(update.getVersion());
+            holder.icon.setImageDrawable(appIcon);
+            holder.description.setText(update.getDescription());
+        }
+
+        if (mChangelogStyle == CHANGELOG_STYLE_BASIC || TextUtils.isEmpty(update.getDescription())) {
+            holder.description.setVisibility(View.GONE);
+        } else if (mChangelogStyle == CHANGELOG_STYLE_SHORT) {
+            holder.description.setMaxLines(3);
+            holder.description.setVisibility(View.VISIBLE);
+        } else {
+            holder.description.setMaxLines(Integer.MAX_VALUE);
+            holder.description.setVisibility(View.VISIBLE);
         }
     }
 
@@ -162,34 +199,6 @@ class ActivityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
             icon = (ImageView) v.findViewById(R.id.icon);
             description = (TextView) v.findViewById(R.id.description);
 
-        }
-
-        void bindTo(PackageUpdate update, View.OnClickListener listener, int changelogStyle) {
-            PackageInfo packageInfo = PackageUtils.getPackageInfo(update.getPackageName());
-
-            CharSequence appName = PackageUtils.getAppLabel(packageInfo);
-            Drawable appIcon = PackageUtils.getAppIconDrawable(packageInfo);
-
-            // Save position in tag and set onClickListener
-            root.setTag(packageInfo);
-            root.setOnClickListener(listener);
-
-            // Replace contents of the view
-            primaryText.setText(appName);
-            secondaryText.setText(update.getVersion());
-            icon.setImageDrawable(appIcon);
-            description.setText(update.getDescription());
-
-
-            if (changelogStyle == CHANGELOG_STYLE_BASIC || TextUtils.isEmpty(update.getDescription())) {
-                description.setVisibility(View.GONE);
-            } else if (changelogStyle == CHANGELOG_STYLE_SHORT){
-                description.setMaxLines(3);
-                description.setVisibility(View.VISIBLE);
-            } else {
-                description.setMaxLines(Integer.MAX_VALUE);
-                description.setVisibility(View.VISIBLE);
-            }
         }
     }
 
