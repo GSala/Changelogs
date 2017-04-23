@@ -2,6 +2,7 @@
 
 # Any keystores
 *.keystore
+*.jks
 
 # Local configuration files (sdk path, etc)
 gradle.properties
