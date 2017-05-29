@@ -35,7 +35,7 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
         when (viewType) {
             TYPE_HEADER -> {
                 val header = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.row_activity_section, parent, false)
+                        .inflate(R.layout.header_navigation, parent, false)
                 return HeaderViewHolder(header)
             }
             TYPE_ITEM -> {
@@ -49,13 +49,13 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            TYPE_HEADER -> (holder as HeaderViewHolder).bindTo("")
+            TYPE_HEADER -> {}
             TYPE_ITEM -> bindUpdateViewHolder(holder as NavigationItemViewHolder, position)
         }
     }
 
     private fun bindUpdateViewHolder(holder: NavigationItemViewHolder, position: Int) {
-        val item = mDataset[position]
+        val item = mDataset[position - 1]
 
         holder.root.tag = item.tag
         holder.root.isEnabled = item.enabled
@@ -72,11 +72,14 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
     }
 
     override fun getItemViewType(position: Int): Int {
-        return TYPE_ITEM
+        return when (position){
+            0 -> TYPE_HEADER
+            else -> TYPE_ITEM
+        }
     }
 
     override fun getItemCount(): Int {
-        return mDataset.size
+        return mDataset.size + 1
     }
 
     override fun onClick(v: View) {
@@ -110,17 +113,6 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
         }
     }
 
-    private class HeaderViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class HeaderViewHolder(v: View) : RecyclerView.ViewHolder(v)
 
-        internal var headerView: TextView
-
-        init {
-            headerView = itemView as TextView
-        }
-
-        internal fun bindTo(header: String) {
-            headerView.text = header
-        }
-
-    }
 }
