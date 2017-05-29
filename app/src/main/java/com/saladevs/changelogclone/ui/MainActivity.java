@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setUpToolbar(mToolbar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation);
-        setUpNavigationView(mNavigationView);
+//        mNavigationView = (NavigationView) findViewById(R.id.navigation);
+//        setUpNavigationView(mNavigationView);
 
         if (!Once.beenDone(Once.THIS_APP_INSTALL, FIRST_TIME_FETCHING)) {
             PackageUtils.getPackageList()
