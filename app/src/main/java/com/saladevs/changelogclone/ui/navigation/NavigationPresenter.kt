@@ -9,11 +9,12 @@ import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.ui.BasePresenter
 import com.saladevs.changelogclone.utils.getPlayStorePackages
 import rx.subscriptions.CompositeSubscription
-import timber.log.Timber
 
 class NavigationPresenter : BasePresenter<NavigationMvpView>() {
 
-    val PREF_DISABLED_PACKAGES = "disabled_packages"
+    companion object {
+        val PREF_DISABLED_PACKAGES = "disabled_packages"
+    }
 
     val mPackageManager: PackageManager = App.getContext().packageManager
     val mDisabledPackages: Preference<Set<String>>
@@ -29,9 +30,6 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
         super.attachView(mvpView)
 
         mSubscriptions.add(mDisabledPackages.asObservable()
-                .doOnNext {
-                    Timber.d("Disabled packages : ${it}")
-                }
                 .map { set ->
                     mPackageManager.getPlayStorePackages()
                             .map {
@@ -41,10 +39,8 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
                                         mPackageManager.getApplicationIcon(it.packageName),
                                         !set.contains(it.packageName))
                             }
-                            .sortedBy { (_, label, _, _) -> label.toString().toLowerCase() }
-
                 }.subscribe({ packages -> getMvpView().showNavigationItems(packages) }))
-        
+
     }
 
     override fun detachView() {
@@ -64,7 +60,6 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
         } else {
             mDisabledPackages.set(set.plus(packageInfo.packageName))
         }
-        Timber.d("Disabled packages : ${mDisabledPackages.get()}")
     }
 
 }
