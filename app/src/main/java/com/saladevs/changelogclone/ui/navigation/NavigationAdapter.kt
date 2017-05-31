@@ -2,9 +2,9 @@ package com.saladevs.changelogclone.ui.navigation
 
 import android.content.pm.PackageInfo
 import android.graphics.drawable.Drawable
-import android.support.v7.util.SortedList
+import android.support.v7.util.DiffUtil
+import android.support.v7.util.ListUpdateCallback
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.util.SortedListAdapterCallback
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,28 +24,45 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
     private var onItemClickListener: ((View, PackageInfo) -> Unit)? = null
     private var onItemLongClickListener: ((View, PackageInfo) -> Unit)? = null
 
-    private var mDataset: SortedList<NavigationItem>
-
-    init {
-        mDataset = SortedList(NavigationItem::class.java, object : SortedListAdapterCallback<NavigationItem>(this) {
-            override fun compare(o1: NavigationItem, o2: NavigationItem): Int {
-                return o1.label.toString().compareTo(o2.label.toString(), true)
-            }
-
-            override fun areContentsTheSame(oldItem: NavigationItem, newItem: NavigationItem): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areItemsTheSame(item1: NavigationItem, item2: NavigationItem): Boolean {
-                return item1.tag.packageName == item2.tag.packageName
-            }
-        })
-    }
+    private var mDataset = emptyList<NavigationItem>()//SortedList<NavigationItem>
 
     fun setData(updates: List<NavigationItem>) {
-        mDataset.beginBatchedUpdates()
-        mDataset.addAll(updates)
-        mDataset.endBatchedUpdates()
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback(){
+            override fun getOldListSize(): Int {
+                return mDataset.size
+            }
+
+            override fun getNewListSize(): Int {
+                return updates.size
+            }
+
+            override fun areItemsTheSame(old: Int, new: Int): Boolean {
+                return mDataset[old].tag.packageName == updates[new].tag.packageName
+            }
+
+            override fun areContentsTheSame(old: Int, new: Int): Boolean {
+                return mDataset[old].enabled == updates[new].enabled
+            }
+        })
+        mDataset = updates
+        diffResult.dispatchUpdatesTo(object : ListUpdateCallback{
+            override fun onChanged(position: Int, count: Int, payload: Any?) {
+                notifyItemChanged(position + 1, payload)
+            }
+
+            override fun onMoved(fromPosition: Int, toPosition: Int) {
+                notifyItemMoved(fromPosition + 1, toPosition + 1)
+            }
+
+            override fun onInserted(position: Int, count: Int) {
+                notifyItemInserted(position + 1)
+            }
+
+            override fun onRemoved(position: Int, count: Int) {
+                notifyItemRemoved(position + 1)
+            }
+
+        })
     }
 
     // Create new views (invoked by the layout manager)
@@ -97,7 +114,7 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
     }
 
     override fun getItemCount(): Int {
-        return mDataset.size() + 1
+        return mDataset.size + 1
     }
 
     override fun onClick(v: View) {

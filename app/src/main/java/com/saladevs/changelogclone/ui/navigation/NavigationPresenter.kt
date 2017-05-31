@@ -8,6 +8,8 @@ import com.f2prateek.rx.preferences.RxSharedPreferences
 import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.ui.BasePresenter
 import com.saladevs.changelogclone.utils.getPlayStorePackages
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 
 class NavigationPresenter : BasePresenter<NavigationMvpView>() {
@@ -39,7 +41,11 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
                                         mPackageManager.getApplicationIcon(it.packageName),
                                         !set.contains(it.packageName))
                             }
-                }.subscribe({ packages -> getMvpView().showNavigationItems(packages) }))
+                            .sortedBy { it.label.toString().toLowerCase() }
+                }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ packages -> getMvpView().showNavigationItems(packages) }))
 
     }
 
