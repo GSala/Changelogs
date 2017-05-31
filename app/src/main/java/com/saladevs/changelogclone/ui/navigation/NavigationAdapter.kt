@@ -2,7 +2,9 @@ package com.saladevs.changelogclone.ui.navigation
 
 import android.content.pm.PackageInfo
 import android.graphics.drawable.Drawable
+import android.support.v7.util.SortedList
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.util.SortedListAdapterCallback
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +12,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.utils.setDisabled
-import java.util.*
 
 
 class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener, View.OnLongClickListener {
@@ -23,11 +24,28 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
     private var onItemClickListener: ((View, PackageInfo) -> Unit)? = null
     private var onItemLongClickListener: ((View, PackageInfo) -> Unit)? = null
 
-    private var mDataset: List<NavigationItem> = ArrayList()
+    private var mDataset: SortedList<NavigationItem>
+
+    init {
+        mDataset = SortedList(NavigationItem::class.java, object : SortedListAdapterCallback<NavigationItem>(this) {
+            override fun compare(o1: NavigationItem, o2: NavigationItem): Int {
+                return o1.label.toString().compareTo(o2.label.toString(), true)
+            }
+
+            override fun areContentsTheSame(oldItem: NavigationItem, newItem: NavigationItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areItemsTheSame(item1: NavigationItem, item2: NavigationItem): Boolean {
+                return item1.tag.packageName == item2.tag.packageName
+            }
+        })
+    }
 
     fun setData(updates: List<NavigationItem>) {
-        mDataset = updates
-        notifyDataSetChanged()
+        mDataset.beginBatchedUpdates()
+        mDataset.addAll(updates)
+        mDataset.endBatchedUpdates()
     }
 
     // Create new views (invoked by the layout manager)
@@ -49,7 +67,8 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            TYPE_HEADER -> {}
+            TYPE_HEADER -> {
+            }
             TYPE_ITEM -> bindUpdateViewHolder(holder as NavigationItemViewHolder, position)
         }
     }
@@ -58,7 +77,6 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
         val item = mDataset[position - 1]
 
         holder.root.tag = item.tag
-        holder.root.isEnabled = item.enabled
         holder.root.setOnClickListener(this)
         holder.root.setOnLongClickListener(this)
 
@@ -72,14 +90,14 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (position){
+        return when (position) {
             0 -> TYPE_HEADER
             else -> TYPE_ITEM
         }
     }
 
     override fun getItemCount(): Int {
-        return mDataset.size + 1
+        return mDataset.size() + 1
     }
 
     override fun onClick(v: View) {

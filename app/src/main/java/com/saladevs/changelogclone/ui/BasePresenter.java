@@ -1,13 +1,13 @@
 package com.saladevs.changelogclone.ui;
 
-public class BasePresenter<T extends MvpView> {
+public abstract class BasePresenter<T extends MvpView> {
     private T mMvpView;
 
-    protected void attachView(T mvpView) {
+    public void attachView(T mvpView) {
         mMvpView = mvpView;
     }
 
-    protected void detachView() {
+    public void detachView() {
         mMvpView = null;
     }
 

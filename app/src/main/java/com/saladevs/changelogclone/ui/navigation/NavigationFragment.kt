@@ -1,6 +1,7 @@
 package com.saladevs.changelogclone.ui.navigation
 
 
+import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,13 +10,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.saladevs.changelogclone.R
-import com.saladevs.changelogclone.utils.getPlayStorePackages
+import com.saladevs.changelogclone.ui.details.DetailsActivity
 import timber.log.Timber
 
-class NavigationFragment() : Fragment() {
+class NavigationFragment() : Fragment(), NavigationMvpView {
+
+    private lateinit var mPresenter: NavigationPresenter
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: NavigationAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mPresenter = NavigationPresenter()
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,22 +41,30 @@ class NavigationFragment() : Fragment() {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        val pm = context.packageManager
-
-        val disabled = listOf("com.Slack")
-        val navigationItems = pm.getPlayStorePackages()
-                .map { it -> NavigationAdapter.NavigationItem(it, pm.getApplicationLabel(it.applicationInfo), pm.getApplicationIcon(it.packageName), !disabled.contains(it.packageName)) }
-                .sortedBy { (_, label, _, _) -> label.toString().toLowerCase() }
-
-        mAdapter.setData(navigationItems)
+        mPresenter.attachView(this)
 
         mAdapter.setOnItemClickListener { view, pi ->
             Timber.d("Click on : ${pi.packageName}")
+            mPresenter.onItemClicked(pi)
         }
 
         mAdapter.setOnItemLongClickListener { view, pi ->
             Timber.d("Long click on : ${pi.packageName}")
+            mPresenter.onItemLongClicked(pi)
         }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        mPresenter.detachView()
+    }
+
+    override fun showNavigationItems(items: List<NavigationAdapter.NavigationItem>) {
+        mAdapter.setData(items);
+    }
+
+    override fun startDetailsActivity(packageInfo: PackageInfo) {
+        DetailsActivity.startWith(context, packageInfo)
     }
 }

@@ -19,7 +19,7 @@ class DetailsPresenter extends BasePresenter<DetailsMvpView> {
     }
 
     @Override
-    protected void attachView(DetailsMvpView mvpView) {
+    public void attachView(DetailsMvpView mvpView) {
         super.attachView(mvpView);
 
         mSubscription = mRealm.where(PackageUpdate.class)
@@ -37,7 +37,7 @@ class DetailsPresenter extends BasePresenter<DetailsMvpView> {
     }
 
     @Override
-    protected void detachView() {
+    public void detachView() {
         super.detachView();
 
         if (!mSubscription.isUnsubscribed()) {
