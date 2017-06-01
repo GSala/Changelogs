@@ -27,7 +27,7 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
     private var mDataset = emptyList<NavigationItem>()//SortedList<NavigationItem>
 
     fun setData(updates: List<NavigationItem>) {
-        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback(){
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize(): Int {
                 return mDataset.size
             }
@@ -45,7 +45,7 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
             }
         })
         mDataset = updates
-        diffResult.dispatchUpdatesTo(object : ListUpdateCallback{
+        diffResult.dispatchUpdatesTo(object : ListUpdateCallback {
             override fun onChanged(position: Int, count: Int, payload: Any?) {
                 notifyItemChanged(position + 1, payload)
             }
@@ -63,6 +63,8 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
             }
 
         })
+
+        notifyItemChanged(0, Any())
     }
 
     // Create new views (invoked by the layout manager)
@@ -71,7 +73,7 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
             TYPE_HEADER -> {
                 val header = LayoutInflater.from(parent.context)
                         .inflate(R.layout.header_navigation, parent, false)
-                return HeaderViewHolder(header)
+                return NavigationHeaderViewHolder(header)
             }
             TYPE_ITEM -> {
                 val update = LayoutInflater.from(parent.context)
@@ -84,24 +86,32 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            TYPE_HEADER -> {
-            }
-            TYPE_ITEM -> bindUpdateViewHolder(holder as NavigationItemViewHolder, position)
+            TYPE_HEADER -> bindHeaderViewHolder(holder as NavigationHeaderViewHolder)
+            TYPE_ITEM -> bindItemViewHolder(holder as NavigationItemViewHolder, position)
         }
     }
 
-    private fun bindUpdateViewHolder(holder: NavigationItemViewHolder, position: Int) {
+    private fun bindHeaderViewHolder(holder: NavigationHeaderViewHolder) {
+        holder.primaryText.text = "${mDataset.size} installed"
+        holder.primaryText.visibility = if (mDataset.isEmpty()) View.GONE else View.VISIBLE
+
+        val ignoredCount = mDataset.count { !it.enabled }
+        holder.secondaryText.text = "$ignoredCount ignored"
+        holder.secondaryText.visibility = if (mDataset.isEmpty()) View.GONE else View.VISIBLE
+    }
+
+    private fun bindItemViewHolder(holder: NavigationItemViewHolder, position: Int) {
         val item = mDataset[position - 1]
 
-        holder.root.tag = item.tag
-        holder.root.setOnClickListener(this)
-        holder.root.setOnLongClickListener(this)
+        holder.itemView.tag = item.tag
+        holder.itemView.setOnClickListener(this)
+        holder.itemView.setOnLongClickListener(this)
 
         // Replace contents of the view
         holder.icon.setImageDrawable(item.icon)
         holder.icon.setDisabled(!item.enabled)
 
-        holder.label.setText(item.label)
+        holder.label.text = item.label
         holder.label.isEnabled = item.enabled
 
     }
@@ -136,18 +146,13 @@ class NavigationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.
 
     // Provide a reference to the views for each data item
     private class NavigationItemViewHolder internal constructor(v: View) : RecyclerView.ViewHolder(v) {
-
-        internal var root: View
-        internal var icon: ImageView
-        internal var label: TextView
-
-        init {
-            root = v.findViewById(R.id.root)
-            icon = v.findViewById(R.id.icon) as ImageView
-            label = v.findViewById(R.id.label) as TextView
-        }
+        internal val icon: ImageView = v.findViewById(R.id.icon) as ImageView
+        internal val label: TextView = v.findViewById(R.id.label) as TextView
     }
 
-    private class HeaderViewHolder(v: View) : RecyclerView.ViewHolder(v)
+    private class NavigationHeaderViewHolder internal constructor(v: View) : RecyclerView.ViewHolder(v) {
+        internal val primaryText = v.findViewById(R.id.primaryText) as TextView
+        internal val secondaryText = v.findViewById(R.id.secondaryText) as TextView
+    }
 
 }
