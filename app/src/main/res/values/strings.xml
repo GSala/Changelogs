@@ -2,7 +2,7 @@
 
 <resources>
 
-    <string name="changelog"></string>
+    <string name="changelog">- Apps can now be ignored by long-clicking them on the navigation drawer\n- Fixed bug that caused the app to crash\n- Added a nice popup showing the changelog when the app is updated</string>
 
     <string name="action_feedback">Feedback</string>
 
