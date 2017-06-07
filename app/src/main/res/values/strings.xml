@@ -2,6 +2,9 @@
 
 <resources>
 
+    <string name="version"></string>
+    <string name="changelog"></string>
+
     <string name="action_feedback">Feedback</string>
 
     <string name="title_activity">Activity</string>

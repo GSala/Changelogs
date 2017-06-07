@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -39,6 +40,13 @@ class MainActivity : AppCompatActivity() {
                     .forEach { PackageService.startActionFetchUpdate(this, it.packageName) }
             Snackbar.make(mToolbar, "Loading latest changes", Snackbar.LENGTH_LONG).show()
             Once.markDone(FIRST_TIME_FETCHING)
+        }
+
+        if (!Once.beenDone(Once.THIS_APP_VERSION, SHOW_CHANGELOG)) {
+            Once.markDone(SHOW_CHANGELOG)
+            AlertDialog.Builder(this)
+                    .setView(layoutInflater.inflate(R.layout.dialog_changelog, null))
+                    .create().show()
         }
     }
 
@@ -80,5 +88,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private val FIRST_TIME_FETCHING = "firstTimeFetching"
+        private val SHOW_CHANGELOG = "showChangelog"
     }
 }
+
