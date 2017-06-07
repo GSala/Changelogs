@@ -22,7 +22,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 3
-        versionName "1.2"
+        versionName "1.2" // Remember to change the changelog too
+        resValue "string", "versionName", versionName
     }
     signingConfigs {
         release {
@@ -33,6 +34,7 @@ android {
         }
     }
     buildTypes {
+
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

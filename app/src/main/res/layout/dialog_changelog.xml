@@ -53,7 +53,7 @@
                 android:layout_below="@id/textPrimary"
                 android:layout_marginLeft="56dp"
                 android:layout_marginStart="56dp"
-                android:text="@string/version"
+                android:text="@string/versionName"
                 android:textColor="@color/textSecondary"
                 android:textSize="14dp"/>
 
