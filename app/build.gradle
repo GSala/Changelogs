@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
@@ -24,6 +25,7 @@ android {
         versionCode 4
         versionName "1.3" // Remember to change the changelog too
         resValue "string", "versionName", versionName
+        manifestPlaceholders = [fabricApiKey:FabricApiKey]
     }
     signingConfigs {
         release {
@@ -82,7 +84,12 @@ dependencies {
     compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 }
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
 }

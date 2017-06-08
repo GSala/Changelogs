@@ -2,6 +2,8 @@ package com.saladevs.changelogclone;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import jonathanfinerty.once.Once;
@@ -23,6 +25,8 @@ public class App extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Fabric.with(this, new Crashlytics());
 
         Timber.plant(new Timber.DebugTree());
 
