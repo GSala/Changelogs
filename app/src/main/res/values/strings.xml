@@ -21,5 +21,9 @@
     <string name="style_short">Short</string>
     <string name="style_full">Full</string>
     <string name="action_show_info">Show application info</string>
+    <string name="action_about">About</string>
+    <string name="developed_by">Developed by SalaDevs</string>
+    <string name="privacy_policy"><a href="">Privacy policy</a></string>
+    <string name="dev_email">saladevs@gmail.com</string>
 
 </resources>

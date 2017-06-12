@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         if (!Once.beenDone(Once.THIS_APP_VERSION, SHOW_CHANGELOG)) {
             Once.markDone(SHOW_CHANGELOG)
             AlertDialog.Builder(this)
-                    .setView(layoutInflater.inflate(R.layout.dialog_changelog, null))
+                    .setView(R.layout.dialog_changelog)
                     .create().show()
         }
     }
@@ -74,8 +74,25 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent.createChooser(emailIntent, "Send Feedback"))
                 return true
             }
+            R.id.action_about -> {
+                showAboutDialog()
+
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showAboutDialog() {
+        val aboutView = layoutInflater.inflate(R.layout.dialog_about, null);
+        aboutView.findViewById(R.id.privacy).setOnClickListener { showPrivacyPolicy() }
+        AlertDialog.Builder(this)
+                .setView(aboutView)
+                .create().show()
+    }
+
+    private fun showPrivacyPolicy() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.BASE_URL + PATH_PRIVACY))
+        startActivity(intent)
     }
 
     override fun onBackPressed() {
@@ -89,6 +106,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private val FIRST_TIME_FETCHING = "firstTimeFetching"
         private val SHOW_CHANGELOG = "showChangelog"
+        private val PATH_PRIVACY = "privacy.html"
     }
 }
 
