@@ -26,10 +26,10 @@ class NavigationFragment() : Fragment(), NavigationMvpView {
         mPresenter = NavigationPresenter()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater!!.inflate(R.layout.fragment_navigation, container, false)
+        val view = inflater.inflate(R.layout.fragment_navigation, container, false)
 
         mRecyclerView = view.findViewById(R.id.recyclerView) as RecyclerView
         mAdapter = NavigationAdapter()
