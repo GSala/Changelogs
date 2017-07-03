@@ -1,10 +1,7 @@
 package com.saladevs.changelogclone.ui.search
 
-import com.saladevs.changelogclone.App
+import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.ui.BasePresenter
-import com.saladevs.changelogclone.utils.getIcon
-import com.saladevs.changelogclone.utils.getLabel
-import com.saladevs.changelogclone.utils.getPlayStorePackages
 
 class SearchPresenter : BasePresenter<SearchMvpView>() {
 
@@ -22,10 +19,9 @@ class SearchPresenter : BasePresenter<SearchMvpView>() {
         if (query.isBlank()) {
             mvpView?.showSearchResults(SearchResult())
         } else {
-            val appResults = App.getContext().packageManager
-                    .getPlayStorePackages()
-                    .filter { it.getLabel().contains(query.trim(), true) }
-                    .map { SearchResult.AppResult(it, it.getLabel(), it.getIcon()) }
+            val appResults = AppManager.getPlayStorePackages()
+                    .filter { AppManager.getAppLabel(it).contains(query.trim(), true) }
+                    .map { SearchResult.AppResult(it, AppManager.getAppLabel(it), AppManager.getAppIcon(it)) }
                     .sortedBy { it.label.toString().toLowerCase() }
 
             mvpView?.showSearchResults(SearchResult(appResults))

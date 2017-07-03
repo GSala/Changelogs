@@ -1,51 +1,36 @@
 package com.saladevs.changelogclone.ui.navigation
 
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.preference.PreferenceManager
-import com.f2prateek.rx.preferences.Preference
-import com.f2prateek.rx.preferences.RxSharedPreferences
-import com.saladevs.changelogclone.App
+import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.ui.BasePresenter
-import com.saladevs.changelogclone.utils.getPlayStorePackages
+import com.saladevs.changelogclone.utils.addTo
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 
 class NavigationPresenter : BasePresenter<NavigationMvpView>() {
 
-    companion object {
-        val PREF_DISABLED_PACKAGES = "disabled_packages"
-    }
-
-    val mPackageManager: PackageManager = App.getContext().packageManager
-    val mDisabledPackages: Preference<Set<String>>
     val mSubscriptions = CompositeSubscription()
-
-    init {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext())
-        val rxPrefs = RxSharedPreferences.create(prefs)
-        mDisabledPackages = rxPrefs.getStringSet(PREF_DISABLED_PACKAGES)
-    }
 
     override fun attachView(mvpView: NavigationMvpView?) {
         super.attachView(mvpView)
 
-        mSubscriptions.add(mDisabledPackages.asObservable()
+        AppManager.getIgnoredAppsObservable()
                 .map { set ->
-                    mPackageManager.getPlayStorePackages()
+                    AppManager.getPlayStorePackages()
                             .map {
                                 NavigationAdapter.NavigationItem(
                                         it,
-                                        mPackageManager.getApplicationLabel(it.applicationInfo),
-                                        mPackageManager.getApplicationIcon(it.packageName),
+                                        AppManager.getAppLabel(it),
+                                        AppManager.getAppIcon(it),
                                         !set.contains(it.packageName))
                             }
                             .sortedBy { it.label.toString().toLowerCase() }
                 }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ packages -> getMvpView()?.showNavigationItems(packages) }))
+                .subscribe({ packages -> getMvpView()?.showNavigationItems(packages) })
+                .addTo(mSubscriptions)
 
     }
 
@@ -60,12 +45,7 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
     }
 
     fun onItemLongClicked(packageInfo: PackageInfo) {
-        val set = mDisabledPackages.get() ?: emptySet()
-        if (set.contains(packageInfo.packageName)) {
-            mDisabledPackages.set(set.minus(packageInfo.packageName))
-        } else {
-            mDisabledPackages.set(set.plus(packageInfo.packageName))
-        }
+        AppManager.toggleAppIgnored(packageInfo.packageName)
     }
 
 }

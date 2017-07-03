@@ -15,11 +15,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.jakewharton.rxbinding.widget.checkedChanges
 import com.saladevs.changelogclone.App
+import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.model.PackageUpdate
 import com.saladevs.changelogclone.utils.addTo
-import com.saladevs.changelogclone.utils.getIcon
-import com.saladevs.changelogclone.utils.getLabel
 import com.saladevs.changelogclone.utils.setDisabled
 import rx.subscriptions.CompositeSubscription
 import timber.log.Timber
@@ -61,8 +60,8 @@ class DetailsFragment() : Fragment(), DetailsMvpView {
         mIgnoreToggle = view.findViewById(R.id.ignoreToggle) as CheckBox
 
         // Setup UI
-        mIcon.setImageDrawable(mPackageInfo.getIcon())
-        label.text = mPackageInfo.getLabel()
+        mIcon.setImageDrawable(AppManager.getAppIcon(mPackageInfo))
+        label.text = AppManager.getAppLabel(mPackageInfo)
         subtitle.text = mPackageInfo.packageName
 
         mIgnoreToggle.checkedChanges()

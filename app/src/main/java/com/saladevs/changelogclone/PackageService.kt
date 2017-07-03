@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import com.saladevs.changelogclone.model.PackageUpdate
 import com.saladevs.changelogclone.network.ApiManager
-import com.saladevs.changelogclone.utils.getPackageInfo
 import io.realm.Realm
 import rx.Observable
 import timber.log.Timber
@@ -18,7 +17,7 @@ class PackageService : IntentService("PackageService") {
             val action = intent.action
             val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME)
 
-            when (action){
+            when (action) {
                 ACTION_FETCH_UPDATE -> handleActionFetchUpdate(packageName)
                 ACTION_REMOVE_PACKAGE -> handleActionRemovePackage(packageName)
             }
@@ -37,7 +36,7 @@ class PackageService : IntentService("PackageService") {
     }
 
     private fun handleActionFetchUpdate(packageName: String) {
-        val packageInfo = packageName.getPackageInfo() ?: return
+        val packageInfo = AppManager.getPackageInfo(packageName) ?: return
 
         val changelogObservable = ApiManager.getPlayStoreService().getChangelog(packageInfo.packageName)
                 .map { it.changes.joinToString("\n") }

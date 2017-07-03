@@ -47,5 +47,7 @@ public class App extends android.app.Application {
         Realm.setDefaultConfiguration(config);
 
         Once.initialise(this);
+
+        AppManager.INSTANCE.init(this);
     }
 }

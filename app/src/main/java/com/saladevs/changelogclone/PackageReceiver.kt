@@ -3,7 +3,6 @@ package com.saladevs.changelogclone
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.saladevs.changelogclone.utils.isInstalledFromGooglePlay
 import timber.log.Timber
 
 class PackageReceiver : BroadcastReceiver() {
@@ -18,7 +17,7 @@ class PackageReceiver : BroadcastReceiver() {
         } else if (intent.action == Intent.ACTION_PACKAGE_REPLACED) {
             // Package updated
             Timber.d("Package updated - %s", packageName)
-            if (packageName.isInstalledFromGooglePlay()) {
+            if (AppManager.isAppFromGooglePlay(packageName)) {
                 PackageService.startActionFetchUpdate(context, packageName)
             }
 

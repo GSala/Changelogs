@@ -1,34 +1,22 @@
 package com.saladevs.changelogclone.ui.details
 
-import android.preference.PreferenceManager
-import com.f2prateek.rx.preferences.Preference
-import com.f2prateek.rx.preferences.RxSharedPreferences
-import com.saladevs.changelogclone.App
+import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.model.PackageUpdate
 import com.saladevs.changelogclone.ui.BasePresenter
-import com.saladevs.changelogclone.ui.navigation.NavigationPresenter
 import com.saladevs.changelogclone.utils.addTo
 import io.realm.Realm
 import io.realm.Sort
 import rx.subscriptions.CompositeSubscription
-import timber.log.Timber
 
 internal class DetailsPresenter(private val mPackageName: String) : BasePresenter<DetailsMvpView>() {
 
     private val mRealm = Realm.getDefaultInstance()
-    val mDisabledPackages: Preference<Set<String>>
     val mSubscriptions = CompositeSubscription()
-
-    init {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext())
-        val rxPrefs = RxSharedPreferences.create(prefs)
-        mDisabledPackages = rxPrefs.getStringSet(NavigationPresenter.PREF_DISABLED_PACKAGES)
-    }
 
     override fun attachView(mvpView: DetailsMvpView) {
         super.attachView(mvpView)
 
-        mDisabledPackages.asObservable()
+        AppManager.getIgnoredAppsObservable()
                 .map { it.contains(mPackageName) }
                 .distinctUntilChanged()
                 .subscribe { getMvpView()?.setPackageIgnored(it) }
@@ -57,13 +45,7 @@ internal class DetailsPresenter(private val mPackageName: String) : BasePresente
     }
 
     fun onIgnoreToggled(checked: Boolean) {
-        Timber.d(" ignoreToggled - $checked ")
-        val set = mDisabledPackages.get() ?: emptySet()
-        if (checked) {
-            mDisabledPackages.set(set.plus(mPackageName))
-        } else {
-            mDisabledPackages.set(set.minus(mPackageName))
-        }
+        AppManager.setAppIgnored(mPackageName, checked)
     }
 
 }

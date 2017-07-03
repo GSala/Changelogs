@@ -11,10 +11,10 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.BuildConfig
 import com.saladevs.changelogclone.PackageService
 import com.saladevs.changelogclone.R
-import com.saladevs.changelogclone.utils.getPlayStorePackages
 import jonathanfinerty.once.Once
 
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         mNavigationView = findViewById(R.id.navFragment)
 
         if (!Once.beenDone(Once.THIS_APP_INSTALL, FIRST_TIME_FETCHING)) {
-            packageManager.getPlayStorePackages()
+            AppManager.getPlayStorePackages()
                     .sortedBy { it.lastUpdateTime }
                     .forEach { PackageService.startActionFetchUpdate(this, it.packageName) }
             Snackbar.make(mToolbar, "Loading latest changes", Snackbar.LENGTH_LONG).show()
