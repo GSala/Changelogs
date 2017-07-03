@@ -9,15 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.saladevs.changelogclone.R
 
-/**
- *
- * Changelogs
- * SearchAdapter
- *
- * Created on 03/07/2017
- * Copyright (c) 2017 SHAPE A/S. All rights reserved.
- *
- */
 class SearchAdapter(val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {

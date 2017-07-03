@@ -6,15 +6,6 @@ import com.saladevs.changelogclone.utils.getIcon
 import com.saladevs.changelogclone.utils.getLabel
 import com.saladevs.changelogclone.utils.getPlayStorePackages
 
-/**
- *
- * Changelogs
- * SearchPresenter
- *
- * Created on 03/07/2017
- * Copyright (c) 2017 SHAPE A/S. All rights reserved.
- *
- */
 class SearchPresenter : BasePresenter<SearchMvpView>() {
 
     override fun attachView(mvpView: SearchMvpView?) {

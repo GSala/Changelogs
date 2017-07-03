@@ -24,15 +24,6 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
-/**
- *
- * Changelogs
- * SearchFragment
- *
- * Created on 03/07/2017
- * Copyright (c) 2017 SHAPE A/S. All rights reserved.
- *
- */
 class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickListener {
 
     private lateinit var mPresenter: SearchPresenter
