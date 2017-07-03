@@ -25,5 +25,6 @@
     <string name="developed_by">Developed by SalaDevs</string>
     <string name="privacy_policy"><a href="">Privacy policy</a></string>
     <string name="dev_email">saladevs@gmail.com</string>
+    <string name="action_search">Search</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.saladevs.changelogclone.ui.search
 
+import android.content.pm.PackageInfo
 import com.saladevs.changelogclone.ui.MvpView
 
 /**
@@ -12,4 +13,6 @@ import com.saladevs.changelogclone.ui.MvpView
  *
  */
 interface SearchMvpView : MvpView {
+
+    fun showSearchResults(results: SearchResult)
 }

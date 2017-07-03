@@ -45,7 +45,7 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
                 }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ packages -> getMvpView().showNavigationItems(packages) }))
+                .subscribe({ packages -> getMvpView()?.showNavigationItems(packages) }))
 
     }
 
@@ -56,7 +56,7 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
     }
 
     fun onItemClicked(packageInfo: PackageInfo) {
-        mvpView.startDetailsActivity(packageInfo)
+        mvpView?.startDetailsActivity(packageInfo)
     }
 
     fun onItemLongClicked(packageInfo: PackageInfo) {

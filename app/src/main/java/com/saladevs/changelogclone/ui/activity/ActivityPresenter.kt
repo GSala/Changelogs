@@ -33,7 +33,7 @@ internal class ActivityPresenter : BasePresenter<ActivityFragment>() {
 
         // Subscribe to Style SharedPreferences changes
         mSubscriptions.add(mChangelogStylePref.asObservable()
-                .subscribe { style -> getMvpView().changeChangelogStyle(style!!) })
+                .subscribe { style -> getMvpView()?.changeChangelogStyle(style!!) })
 
         val realmObs = mRealm.where(PackageUpdate::class.java)
                 .findAllSortedAsync("date", Sort.DESCENDING)
@@ -46,10 +46,10 @@ internal class ActivityPresenter : BasePresenter<ActivityFragment>() {
                         { results, ignored -> results.filter { !ignored.contains(it.packageName) } })
                         .subscribe { updates ->
                             if (updates.isNotEmpty()) {
-                                getMvpView().showEmptyState(false)
-                                getMvpView().showUpdates(updates)
+                                getMvpView()?.showEmptyState(false)
+                                getMvpView()?.showUpdates(updates)
                             } else {
-                                getMvpView().showEmptyState(true)
+                                getMvpView()?.showEmptyState(true)
                             }
                         })
     }
@@ -61,7 +61,7 @@ internal class ActivityPresenter : BasePresenter<ActivityFragment>() {
     }
 
     fun onItemClicked(packageInfo: PackageInfo) {
-        mvpView.startDetailsActivity(packageInfo)
+        mvpView?.startDetailsActivity(packageInfo)
     }
 
     fun onChangelogStyleSelected(style: Int) {
