@@ -34,6 +34,7 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: SearchAdapter
 
+    private lateinit var mMenuItem: MenuItem
     private lateinit var mSearchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,10 +65,10 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_search, menu)
 
-        val menuItem = menu.findItem(R.id.action_search)
-        mSearchView = MenuItemCompat.getActionView(menuItem) as SearchView
+        mMenuItem = menu.findItem(R.id.action_search)
+        mSearchView = MenuItemCompat.getActionView(mMenuItem) as SearchView
 
-        RxMenuItemCompat.actionViewEvents(menuItem) { true }
+        RxMenuItemCompat.actionViewEvents(mMenuItem) { true }
                 .subscribe {
                     when (it.kind()) {
                         MenuItemActionViewEvent.Kind.EXPAND -> showSearchList(true)
@@ -82,7 +83,7 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
                 .addTo(mSubscriptions)
 
         mRootView.clicks()
-                .subscribe { menuItem.collapseActionView() }
+                .subscribe { mMenuItem.collapseActionView() }
                 .addTo(mSubscriptions)
 
     }
@@ -104,6 +105,7 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
     }
 
     override fun onItemClick(result: PackageInfo) {
+        mMenuItem.collapseActionView()
         DetailsActivity.startWith(context, result)
 
     }
