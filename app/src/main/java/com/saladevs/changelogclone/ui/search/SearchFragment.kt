@@ -40,8 +40,6 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
 
     private lateinit var mSearchView: SearchView
 
-    private var savedStateQuery: CharSequence? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,8 +56,6 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
         mRecyclerView.adapter = mAdapter
-
-        savedStateQuery = savedInstanceState?.getCharSequence("testing", null)
 
         return mRootView
     }
@@ -88,11 +84,6 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { mPresenter.onSearchQuery(it) }
 
-        savedStateQuery?.let {
-            menuItem.expandActionView()
-            mSearchView.setQuery(savedStateQuery, true)
-        }
-
         mRootView.clicks().subscribe {
             menuItem.collapseActionView()
         }
@@ -106,13 +97,6 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
                 if (mRootView.alpha == 0f) mRootView.visibility = View.GONE
             }
         })
-    }
-
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putCharSequence("testing", mSearchView.query)
-
-        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroyView() {
