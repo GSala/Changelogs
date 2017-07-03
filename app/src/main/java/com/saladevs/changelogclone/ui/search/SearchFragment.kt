@@ -2,6 +2,7 @@ package com.saladevs.changelogclone.ui.search
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.MenuItemCompat
@@ -14,6 +15,7 @@ import com.jakewharton.rxbinding.support.v7.widget.queryTextChanges
 import com.jakewharton.rxbinding.view.MenuItemActionViewEvent
 import com.jakewharton.rxbinding.view.clicks
 import com.saladevs.changelogclone.R
+import com.saladevs.changelogclone.ui.details.DetailsActivity
 import rx.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -28,7 +30,7 @@ import java.util.concurrent.TimeUnit
  * Copyright (c) 2017 SHAPE A/S. All rights reserved.
  *
  */
-class SearchFragment() : Fragment(), SearchMvpView {
+class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickListener {
 
     private lateinit var mPresenter: SearchPresenter
 
@@ -51,8 +53,9 @@ class SearchFragment() : Fragment(), SearchMvpView {
         mRootView = inflater.inflate(R.layout.fragment_search, container, false)
 
         mRecyclerView = mRootView.findViewById(R.id.recyclerView) as RecyclerView
-        mAdapter = SearchAdapter()
+        mAdapter = SearchAdapter(this)
 
+        mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
         mRecyclerView.adapter = mAdapter
 
@@ -116,6 +119,11 @@ class SearchFragment() : Fragment(), SearchMvpView {
         super.onDestroyView()
 
         mPresenter.detachView()
+    }
+
+    override fun onItemClick(result: PackageInfo) {
+        DetailsActivity.startWith(context, result)
+
     }
 
     override fun showSearchResults(result: SearchResult) {

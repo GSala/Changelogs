@@ -1,5 +1,6 @@
 package com.saladevs.changelogclone.ui.search
 
+import android.content.pm.PackageInfo
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,11 @@ import com.saladevs.changelogclone.R
  * Copyright (c) 2017 SHAPE A/S. All rights reserved.
  *
  */
-class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchAdapter(val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(result: PackageInfo)
+    }
 
     private var apps: List<SearchResult.AppResult> = emptyList()
     private var changelogs: List<SearchResult.ChangelogResult> = emptyList()
@@ -61,8 +66,7 @@ class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val item = apps.get(position - 1)
 
         holder.itemView.tag = item.tag
-//        holder.itemView.setOnClickListener(this)
-//        holder.itemView.setOnLongClickListener(this)
+        holder.itemView.setOnClickListener { listener.onItemClick(apps.get(holder.adapterPosition - 1).tag) }
 
         // Replace contents of the view
         holder.icon.setImageDrawable(item.icon)
