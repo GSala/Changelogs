@@ -86,7 +86,9 @@
             android:clipToPadding="false"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
+            android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
+            android:smoothScrollbar="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/row_details_card"/>
 
