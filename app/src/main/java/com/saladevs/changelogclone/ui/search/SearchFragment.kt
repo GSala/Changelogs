@@ -14,6 +14,7 @@ import com.jakewharton.rxbinding.support.v4.view.RxMenuItemCompat
 import com.jakewharton.rxbinding.support.v7.widget.queryTextChanges
 import com.jakewharton.rxbinding.view.MenuItemActionViewEvent
 import com.jakewharton.rxbinding.view.clicks
+import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.ui.details.DetailsActivity
 import rx.android.schedulers.AndroidSchedulers
@@ -101,8 +102,8 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         mPresenter.detachView()
+        App.getRefWatcher().watch(this)
     }
 
     override fun onItemClick(result: PackageInfo) {

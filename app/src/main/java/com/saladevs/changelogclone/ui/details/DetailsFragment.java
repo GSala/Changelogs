@@ -16,12 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.saladevs.changelogclone.App;
 import com.saladevs.changelogclone.R;
 import com.saladevs.changelogclone.model.PackageUpdate;
 
 import java.util.List;
-
-import static android.service.notification.Condition.SCHEME;
 
 public class DetailsFragment extends Fragment implements DetailsMvpView {
 
@@ -87,8 +86,8 @@ public class DetailsFragment extends Fragment implements DetailsMvpView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         mPresenter.detachView();
+        App.getRefWatcher().watch(this);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

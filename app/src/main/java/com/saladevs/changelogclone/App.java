@@ -3,6 +3,9 @@ package com.saladevs.changelogclone;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
+
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -13,6 +16,7 @@ import timber.log.Timber;
 public class App extends android.app.Application {
 
     private static App instance;
+    private static RefWatcher refWatcher;
 
     public App() {
         instance = this;
@@ -22,9 +26,17 @@ public class App extends android.app.Application {
         return instance;
     }
 
+    public static RefWatcher getRefWatcher() {
+        return refWatcher;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        refWatcher = LeakCanary.install(this);
 
         Fabric.with(this, new Crashlytics());
 

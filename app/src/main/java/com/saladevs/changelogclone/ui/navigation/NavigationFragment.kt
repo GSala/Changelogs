@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.ui.details.DetailsActivity
 import timber.log.Timber
@@ -56,8 +57,8 @@ class NavigationFragment() : Fragment(), NavigationMvpView {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         mPresenter.detachView()
+        App.getRefWatcher().watch(this)
     }
 
     override fun showNavigationItems(items: List<NavigationAdapter.NavigationItem>) {
