@@ -17,7 +17,9 @@ import com.jakewharton.rxbinding.view.clicks
 import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.ui.details.DetailsActivity
+import com.saladevs.changelogclone.utils.addTo
 import rx.android.schedulers.AndroidSchedulers
+import rx.subscriptions.CompositeSubscription
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -34,6 +36,8 @@ import java.util.concurrent.TimeUnit
 class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickListener {
 
     private lateinit var mPresenter: SearchPresenter
+
+    private val mSubscriptions = CompositeSubscription()
 
     private lateinit var mRootView: View
     private lateinit var mRecyclerView: RecyclerView
@@ -84,10 +88,11 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
                 .throttleLast(200, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { mPresenter.onSearchQuery(it) }
+                .addTo(mSubscriptions)
 
-        mRootView.clicks().subscribe {
-            menuItem.collapseActionView()
-        }
+        mRootView.clicks()
+                .subscribe { menuItem.collapseActionView() }
+                .addTo(mSubscriptions)
 
     }
 
@@ -102,6 +107,7 @@ class SearchFragment() : Fragment(), SearchMvpView, SearchAdapter.OnItemClickLis
 
     override fun onDestroyView() {
         super.onDestroyView()
+        mSubscriptions.unsubscribe()
         mPresenter.detachView()
         App.getRefWatcher().watch(this)
     }
