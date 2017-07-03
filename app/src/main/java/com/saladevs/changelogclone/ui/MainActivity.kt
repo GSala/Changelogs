@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mNavigationView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_Base_TranslucentSystemBar)
+        setTheme(R.style.AppTheme_TranslucentSystemBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

@@ -12,7 +12,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:background="#37474F"
+        android:background="@color/secondary"
+        android:elevation="4dp"
         android:theme="@style/Theme.AppCompat">
 
         <ImageView
