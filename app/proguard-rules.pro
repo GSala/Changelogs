@@ -37,3 +37,7 @@
 
 # ---- RetroLambda ----
 -dontwarn java.lang.invoke.*
+
+# ---- Framework ----
+-keep class android.support.v7.widget.SearchView { *; }
+
