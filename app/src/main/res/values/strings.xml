@@ -2,7 +2,7 @@
 
 <resources>
 
-    <string name="changelog">- Added \'About\' dialog</string>
+    <string name="changelog">In this update:\n- Dark Theme!\n- Added search for apps\n- Added a button to ignore an app within the app details screen\n- Fixed some memory issues\n\nFuture plans:\n- Search within changelogs\n- Favorites\n- Notifications</string>
 
     <string name="action_feedback">Feedback</string>
 
