@@ -24,17 +24,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:popupTheme="@style/AppTheme.PopupMenu"
                 tools:title="Changelogs"/>
         </android.support.design.widget.AppBarLayout>
 
-        <fragment
-            android:id="@+id/activityFragment"
-            android:name="com.saladevs.changelogclone.ui.activity.ActivityFragment"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:layout="@layout/fragment_activity"/>
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/activityFragment"
+                android:name="com.saladevs.changelogclone.ui.activity.ActivityFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:layout="@layout/fragment_activity"/>
+
+            <fragment
+                android:id="@+id/searchragment"
+                android:name="com.saladevs.changelogclone.ui.search.SearchFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_search"/>
+        </FrameLayout>
 
     </LinearLayout>
 

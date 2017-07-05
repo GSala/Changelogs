@@ -18,8 +18,6 @@ import java.util.List;
 
 public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHolder> implements View.OnClickListener {
 
-    public static final String TAG = ".DetailsAdapter";
-
     private OnItemClickListener onItemClickListener;
 
     private SortedList<PackageUpdate> mDataset;

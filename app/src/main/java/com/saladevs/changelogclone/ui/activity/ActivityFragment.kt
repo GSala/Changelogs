@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.R.id.recyclerView
 import com.saladevs.changelogclone.model.PackageUpdate
@@ -69,6 +70,7 @@ class ActivityFragment : Fragment(), ActivityMvpView, ActivityAdapter.OnItemClic
         super.onDestroyView()
         Timber.d("-- onDestroyView --")
         mPresenter.detachView()
+        App.getRefWatcher().watch(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {

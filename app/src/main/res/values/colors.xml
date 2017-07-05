@@ -2,12 +2,10 @@
 <resources>
     <color name="accent">#009688</color>
     <color name="primary">#263238</color>
-    <color name="primaryDark">#21272B</color>
-    <color name="textPrimary">#212121</color>
-    <color name="textSecondary">#727272</color>
-    <color name="divider">#B6B6B6</color>
+    <color name="primaryDark">#263238</color>
+    <color name="secondary">#37474F</color>
+    <color name="divider">#1F000000</color>
     <color name="windowBackground">#F5F5F5</color>
-
-    <color name="emptyStateBackground">#E0E0E0</color>
+    <color name="cardBackground">#FFFFFF</color>
 
 </resources>

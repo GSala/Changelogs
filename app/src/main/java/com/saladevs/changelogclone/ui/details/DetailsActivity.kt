@@ -6,24 +6,18 @@ import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.widget.ImageView
-import android.widget.TextView
 import com.saladevs.changelogclone.R
-import com.saladevs.changelogclone.utils.getIcon
-import com.saladevs.changelogclone.utils.getLabel
 
 class DetailsActivity : AppCompatActivity() {
 
     private lateinit var mPackageInfo: PackageInfo
 
-    private lateinit var mToolbar: Toolbar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        mToolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(mToolbar)
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Get packageInfo from Intent bundle
@@ -35,15 +29,7 @@ class DetailsActivity : AppCompatActivity() {
         val fragment = DetailsFragment.newInstance(mPackageInfo)
         transaction.replace(R.id.container, fragment).commit()
 
-        // Get View references
-        val icon = findViewById(R.id.icon) as ImageView
-        val label = findViewById(R.id.textPrimary) as TextView
-        val subtitle = findViewById(R.id.textSecondary) as TextView
 
-        // Setup UI
-        icon.setImageDrawable(mPackageInfo.getIcon())
-        label.text = mPackageInfo.getLabel()
-        subtitle.text = mPackageInfo.packageName
     }
 
     companion object {

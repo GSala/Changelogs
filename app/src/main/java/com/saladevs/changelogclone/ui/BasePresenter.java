@@ -1,5 +1,7 @@
 package com.saladevs.changelogclone.ui;
 
+import android.support.annotation.Nullable;
+
 public abstract class BasePresenter<T extends MvpView> {
     private T mMvpView;
 
@@ -15,6 +17,7 @@ public abstract class BasePresenter<T extends MvpView> {
         return mMvpView != null;
     }
 
+    @Nullable
     protected T getMvpView() {
         return mMvpView;
     }

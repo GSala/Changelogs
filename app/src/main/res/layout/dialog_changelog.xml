@@ -5,10 +5,10 @@
                                     android:id="@+id/root"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:background="@android:color/white"
                                     android:clickable="true"
                                     android:focusable="true"
                                     android:foreground="?android:attr/selectableItemBackground"
+                                    app:cardBackgroundColor="@color/cardBackground"
                                     app:cardCornerRadius="0dp">
 
     <LinearLayout
@@ -41,7 +41,7 @@
                 android:layout_marginLeft="56dp"
                 android:layout_marginStart="56dp"
                 android:text="Changes"
-                android:textColor="@color/textPrimary"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16dp"/>
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_marginLeft="56dp"
                 android:layout_marginStart="56dp"
                 android:text="@string/versionName"
-                android:textColor="@color/textSecondary"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="14dp"/>
 
         </RelativeLayout>
@@ -69,7 +69,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/changelog"
-            android:textColor="@color/textSecondary"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp"/>
 
     </LinearLayout>

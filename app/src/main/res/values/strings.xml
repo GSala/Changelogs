@@ -2,7 +2,7 @@
 
 <resources>
 
-    <string name="changelog">- Added \'About\' dialog</string>
+    <string name="changelog">In this update:\n- Dark Theme!\n- Added search for apps\n- Added a button to ignore an app within the app details screen\n- Fixed some memory issues\n\nFuture plans:\n- Search within changelogs\n- Favorites\n- Notifications</string>
 
     <string name="action_feedback">Feedback</string>
 
@@ -25,5 +25,10 @@
     <string name="developed_by">Developed by SalaDevs</string>
     <string name="privacy_policy"><a href="">Privacy policy</a></string>
     <string name="dev_email">saladevs@gmail.com</string>
+    <string name="action_search">Search</string>
+    <string name="menu_theme">Theme</string>
+    <string name="theme_day">Day</string>
+    <string name="theme_night">Night</string>
+    <string name="theme_auto">Auto</string>
 
 </resources>

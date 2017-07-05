@@ -9,11 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.model.PackageUpdate
-import com.saladevs.changelogclone.utils.getIcon
-import com.saladevs.changelogclone.utils.getLabel
-import com.saladevs.changelogclone.utils.getPackageInfo
 import java.util.*
 
 internal class ActivityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener {
@@ -86,7 +84,7 @@ internal class ActivityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         val update = mDataset[getDatasetPosition(position)]
 
         if (payloads.isEmpty()) {
-            val packageInfo = update.packageName.getPackageInfo()
+            val packageInfo = AppManager.getPackageInfo(update.packageName)
 
             if (packageInfo == null) {
                 emptyViewHolder(holder)
@@ -97,9 +95,9 @@ internal class ActivityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             holder.root.setOnClickListener(this)
 
             // Replace contents of the view
-            holder.primaryText.text = packageInfo.getLabel()
+            holder.primaryText.text = AppManager.getAppLabel(packageInfo)
             holder.secondaryText.text = update.version
-            holder.icon.setImageDrawable(packageInfo.getIcon())
+            holder.icon.setImageDrawable(AppManager.getAppIcon(packageInfo))
             holder.description.text = update.description
         }
 

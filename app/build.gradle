@@ -22,8 +22,8 @@ android {
         applicationId "com.saladevs.changelogclone"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.4" // Remember to change the changelog too
+        versionCode 6
+        versionName "1.5" // Remember to change the changelog too
         resValue "string", "versionName", versionName
         manifestPlaceholders = [fabricApiKey:FabricApiKey]
         buildConfigField 'String', 'BASE_URL', BaseUrl
@@ -84,6 +84,13 @@ dependencies {
     compile 'io.reactivex:rxjava:1.2.9'
     compile 'com.artemzin.rxjava:proguard-rules:1.2.9.0'
     compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
+    compile 'com.jakewharton.rxbinding:rxbinding-kotlin:1.0.1'
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:1.0.1'
+    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:1.0.1'
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
