@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:popupTheme="@style/AppTheme.PopupMenu"
                 tools:title="Changelogs"/>
         </android.support.design.widget.AppBarLayout>
 

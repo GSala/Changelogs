@@ -7,14 +7,12 @@ import android.support.design.widget.Snackbar
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.saladevs.changelogclone.AppManager
-import com.saladevs.changelogclone.BuildConfig
-import com.saladevs.changelogclone.PackageService
-import com.saladevs.changelogclone.R
+import com.saladevs.changelogclone.*
 import jonathanfinerty.once.Once
 
 
@@ -24,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mNavigationView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(StylesManager.globalTheme)
         setTheme(R.style.AppTheme_TranslucentSystemBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -67,6 +66,18 @@ class MainActivity : AppCompatActivity() {
             android.R.id.home -> {
                 mDrawerLayout.openDrawer(mNavigationView)
                 return true
+            }
+            R.id.action_theme_day -> {
+                StylesManager.globalTheme = AppCompatDelegate.MODE_NIGHT_NO
+                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            R.id.action_theme_night -> {
+                StylesManager.globalTheme = AppCompatDelegate.MODE_NIGHT_YES
+                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            R.id.action_theme_auto -> {
+                StylesManager.globalTheme = AppCompatDelegate.MODE_NIGHT_AUTO
+                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
             }
             R.id.action_feedback -> {
                 val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "saladevs@gmail.com"))

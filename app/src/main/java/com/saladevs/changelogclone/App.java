@@ -1,7 +1,6 @@
 package com.saladevs.changelogclone;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
@@ -18,11 +17,6 @@ public class App extends android.app.Application {
 
     private static App instance;
     private static RefWatcher refWatcher;
-
-    static {
-        AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_YES);
-    }
 
     public App() {
         instance = this;
@@ -55,5 +49,6 @@ public class App extends android.app.Application {
         Once.initialise(this);
 
         AppManager.INSTANCE.init(this);
+        StylesManager.INSTANCE.init(this);
     }
 }

@@ -26,5 +26,9 @@
     <string name="privacy_policy"><a href="">Privacy policy</a></string>
     <string name="dev_email">saladevs@gmail.com</string>
     <string name="action_search">Search</string>
+    <string name="menu_theme">Theme</string>
+    <string name="theme_day">Day</string>
+    <string name="theme_night">Night</string>
+    <string name="theme_auto">Auto</string>
 
 </resources>
