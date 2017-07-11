@@ -12,6 +12,8 @@ import android.view.*
 import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.R
 import com.saladevs.changelogclone.R.id.recyclerView
+import com.saladevs.changelogclone.model.ActivityChangelogStyle
+import com.saladevs.changelogclone.model.ActivityChangelogStyle.*
 import com.saladevs.changelogclone.model.PackageUpdate
 import com.saladevs.changelogclone.ui.details.DetailsActivity
 import timber.log.Timber
@@ -79,21 +81,12 @@ class ActivityFragment : Fragment(), ActivityMvpView, ActivityAdapter.OnItemClic
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            R.id.action_changelog_style_basic -> {
-                mPresenter.onChangelogStyleSelected(ActivityAdapter.CHANGELOG_STYLE_BASIC)
-                return true
-            }
-            R.id.action_changelog_style_short -> {
-                mPresenter.onChangelogStyleSelected(ActivityAdapter.CHANGELOG_STYLE_SHORT)
-                return true
-            }
-            R.id.action_changelog_style_full -> {
-                mPresenter.onChangelogStyleSelected(ActivityAdapter.CHANGELOG_STYLE_FULL)
-                return true
-            }
+        return when (item!!.itemId) {
+            R.id.action_changelog_style_basic -> mPresenter.onChangelogStyleSelected(BASIC)
+            R.id.action_changelog_style_short -> mPresenter.onChangelogStyleSelected(SHORT)
+            R.id.action_changelog_style_full -> mPresenter.onChangelogStyleSelected(FULL)
+            else -> false
         }
-        return false
     }
 
     override fun onItemClick(v: View, packageInfo: PackageInfo) {
@@ -108,8 +101,8 @@ class ActivityFragment : Fragment(), ActivityMvpView, ActivityAdapter.OnItemClic
         mAdapter.setData(updates)
     }
 
-    override fun changeChangelogStyle(style: Int) {
-        mAdapter.setChangelogStyle(style)
+    override fun changeChangelogStyle(style: ActivityChangelogStyle) {
+        mAdapter.changelogStyle = style
     }
 
     override fun startDetailsActivity(packageInfo: PackageInfo) {

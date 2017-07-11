@@ -1,11 +1,9 @@
 package com.saladevs.changelogclone.ui.activity
 
 import android.content.pm.PackageInfo
-import android.preference.PreferenceManager
-import com.f2prateek.rx.preferences.Preference
-import com.f2prateek.rx.preferences.RxSharedPreferences
-import com.saladevs.changelogclone.App
 import com.saladevs.changelogclone.AppManager
+import com.saladevs.changelogclone.StylesManager
+import com.saladevs.changelogclone.model.ActivityChangelogStyle
 import com.saladevs.changelogclone.model.PackageUpdate
 import com.saladevs.changelogclone.ui.BasePresenter
 import io.realm.Realm
@@ -15,22 +13,14 @@ import rx.subscriptions.CompositeSubscription
 
 internal class ActivityPresenter : BasePresenter<ActivityFragment>() {
 
-    private val mRealm: Realm
+    private val mRealm: Realm = Realm.getDefaultInstance()
     private val mSubscriptions = CompositeSubscription()
-    private val mChangelogStylePref: Preference<Int>
-
-    init {
-        mRealm = Realm.getDefaultInstance()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext())
-        val rxPrefs = RxSharedPreferences.create(prefs)
-        mChangelogStylePref = rxPrefs.getInteger(PREF_CHANGELOG_STYLE)
-    }
 
     override fun attachView(mvpView: ActivityFragment) {
         super.attachView(mvpView)
 
         // Subscribe to Style SharedPreferences changes
-        mSubscriptions.add(mChangelogStylePref.asObservable()
+        mSubscriptions.add(StylesManager.activityChangelogStyleObs
                 .subscribe { style -> getMvpView()?.changeChangelogStyle(style!!) })
 
         val realmObs = mRealm.where(PackageUpdate::class.java)
@@ -62,11 +52,8 @@ internal class ActivityPresenter : BasePresenter<ActivityFragment>() {
         mvpView?.startDetailsActivity(packageInfo)
     }
 
-    fun onChangelogStyleSelected(style: Int) {
-        mChangelogStylePref.set(style)
-    }
-
-    companion object {
-        private val PREF_CHANGELOG_STYLE = "prefChangelogStyle"
+    fun onChangelogStyleSelected(style: ActivityChangelogStyle): Boolean {
+        StylesManager.activityChangelogStyle = style
+        return true
     }
 }

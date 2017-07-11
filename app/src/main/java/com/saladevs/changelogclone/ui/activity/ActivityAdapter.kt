@@ -11,6 +11,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.R
+import com.saladevs.changelogclone.StylesManager
+import com.saladevs.changelogclone.model.ActivityChangelogStyle
+import com.saladevs.changelogclone.model.ActivityChangelogStyle.BASIC
+import com.saladevs.changelogclone.model.ActivityChangelogStyle.SHORT
 import com.saladevs.changelogclone.model.PackageUpdate
 import java.util.*
 
@@ -21,7 +25,6 @@ internal class ActivityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     private var mDataset: List<PackageUpdate> = emptyList()
     private var mHeaders: Map<Int, String> = emptyMap()
 
-    private var mChangelogStyle: Int = CHANGELOG_STYLE_BASIC
 
     fun setData(updates: List<PackageUpdate>) {
         mDataset = updates
@@ -29,12 +32,13 @@ internal class ActivityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         notifyDataSetChanged()
     }
 
-    fun setChangelogStyle(style: Int) {
-        mChangelogStyle = style
-        // Notify item changed for every PackageUpdate row
-        (0..itemCount).filter { !mHeaders.containsKey(it) }
-                .forEach { notifyItemChanged(it, style) }
-    }
+    var changelogStyle: ActivityChangelogStyle = StylesManager.activityChangelogStyle
+        set(value) {
+            field = value
+            // Notify item changed for every PackageUpdate row
+            (0..itemCount).filter { !mHeaders.containsKey(it) }
+                    .forEach { notifyItemChanged(it, value) }
+        }
 
     private fun extractHeaders(updates: List<PackageUpdate>): Map<Int, String> {
         val headers = HashMap<Int, String>()
@@ -101,9 +105,10 @@ internal class ActivityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             holder.description.text = update.description
         }
 
-        if (mChangelogStyle == CHANGELOG_STYLE_BASIC || TextUtils.isEmpty(update.description)) {
+
+        if (changelogStyle == BASIC || TextUtils.isEmpty(update.description)) {
             holder.description.visibility = View.GONE
-        } else if (mChangelogStyle == CHANGELOG_STYLE_SHORT) {
+        } else if (changelogStyle == SHORT) {
             holder.description.maxLines = 3
             holder.description.visibility = View.VISIBLE
         } else {
@@ -170,10 +175,6 @@ internal class ActivityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     companion object {
         private val TYPE_UPDATE = 1
         private val TYPE_HEADER = 2
-
-        val CHANGELOG_STYLE_BASIC = 0
-        val CHANGELOG_STYLE_SHORT = 1
-        val CHANGELOG_STYLE_FULL = 2
     }
 
 }
