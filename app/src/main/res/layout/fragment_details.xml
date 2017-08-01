@@ -84,14 +84,14 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipChildren="false"
             android:clipToPadding="false"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
+            android:paddingBottom="24dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             android:smoothScrollbar="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/row_details_card"/>
+            tools:listitem="@layout/row_details_card_detailed"/>
 
     </FrameLayout>
 </LinearLayout>

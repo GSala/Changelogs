@@ -4,7 +4,7 @@
     <color name="primary">#243447</color>
     <color name="primaryDark">#161F2B</color>
     <color name="secondary">#2B3D50</color>
-    <color name="divider">#1FFFFFFF</color>
+    <color name="divider">#1F000000</color>
     <color name="windowBackground">#141D26</color>
     <color name="cardBackground">#1B2836</color>
 </resources>

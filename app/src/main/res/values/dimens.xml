@@ -4,4 +4,11 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="design_navigation_icon_padding" tools:override="true">16dp</dimen>
 
+    <dimen name="d0">0dp</dimen>
+    <dimen name="d2">2dp</dimen>
+    <dimen name="d4">4dp</dimen>
+    <dimen name="d8">8dp</dimen>
+    <dimen name="d16">16dp</dimen>
+    <dimen name="d32">32dp</dimen>
+
 </resources>
