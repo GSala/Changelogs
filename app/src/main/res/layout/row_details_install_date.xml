@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.saladevs.changelogclone.App"/>
+
+        <import type="com.saladevs.changelogclone.utils.FunctionsKt"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="installationDate"
+            type="String"/>
+
+        <variable
+            name="top"
+            type="Boolean"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:maxLines="1"
+            android:text="@{installationDate}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TextView"/>
+
+        <ImageView
+            android:id="@+id/link"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="0dp"
+            android:src="@{App.context.resources.getDrawable(FunctionsKt.getDetailsInstallLinkDrawable(top))}"
+            android:tint="@color/accent"
+            app:layout_constraintBottom_toBottomOf="@+id/subtitle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/subtitle"/>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/accent"
+            android:visibility="@{top ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@+id/link"
+            app:layout_constraintLeft_toLeftOf="@+id/link"
+            app:layout_constraintRight_toRightOf="@+id/link"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

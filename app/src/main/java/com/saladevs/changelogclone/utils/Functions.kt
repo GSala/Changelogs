@@ -2,6 +2,14 @@ package com.saladevs.changelogclone.utils
 
 import com.saladevs.changelogclone.R
 
+fun getDetailsInstallLinkDrawable(top: Boolean): Int {
+    return when {
+        top -> R.drawable.ic_details_link_single_install_alt
+        else -> R.drawable.ic_details_link_bot_install_alt
+    }
+}
+
+
 fun getDetailsSimpleLinkDrawable(top: Boolean, bottom: Boolean, error: Boolean): Int {
     if (error) {
         return when {

@@ -1,5 +1,6 @@
 package com.saladevs.changelogclone.ui.details
 
+import android.content.pm.ApplicationInfo
 import com.saladevs.changelogclone.AppManager
 import com.saladevs.changelogclone.model.PackageUpdate
 import com.saladevs.changelogclone.ui.BasePresenter
@@ -7,6 +8,7 @@ import com.saladevs.changelogclone.utils.addTo
 import io.realm.Realm
 import io.realm.Sort
 import rx.subscriptions.CompositeSubscription
+
 
 internal class DetailsPresenter(private val mPackageName: String) : BasePresenter<DetailsMvpView>() {
 
@@ -35,6 +37,12 @@ internal class DetailsPresenter(private val mPackageName: String) : BasePresente
                     }
                 }
                 .addTo(mSubscriptions)
+
+        AppManager.getPackageInfo(mPackageName)?.let {
+            val isSystemApp = it.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0
+            mvpView.showInstallationDate(it.firstInstallTime, isSystemApp)
+        }
+
     }
 
     override fun detachView() {

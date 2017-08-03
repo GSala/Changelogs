@@ -9,6 +9,8 @@ interface DetailsMvpView : MvpView {
 
     fun showUpdates(updates: List<PackageUpdate>)
 
+    fun showInstallationDate(installationTime: Long, isSystemApp: Boolean)
+
     fun setPackageIgnored(ignored: Boolean)
 
 }

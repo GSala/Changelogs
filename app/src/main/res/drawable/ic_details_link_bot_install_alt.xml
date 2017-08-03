@@ -1,0 +1,25 @@
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="240"
+    android:viewportWidth="240">
+    <group android:name="layer1">
+        <path
+            android:name="path4513"
+            android:fillColor="#000000"
+            android:pathData="M 120 40 C 75.817 40 40 75.817 40 120 C 40 141.217 48.429 161.566 63.431 176.569 C 78.434 191.572 98.783 200 120 200 C 141.217 200 161.566 191.572 176.569 176.569 C 191.572 161.566 200 141.217 200 120 C 200 98.783 191.572 78.434 176.569 63.431 C 161.566 48.429 141.217 40 120 40 Z M 120 60 C 153.137 60 180 86.863 180 120 C 180 153.137 153.137 180 120 180 C 86.863 180 60 153.137 60 120 C 60 86.863 86.863 60 120 60 Z"/>
+        <path
+            android:name="path42"
+            android:fillColor="#000"
+            android:pathData="M 120 75 C 95.147 75 75 95.147 75 120 C 75 144.853 95.147 165 120 165 C 144.853 165 165 144.853 165 120 C 165 95.147 144.853 75 120 75 Z M 120 90 C 136.568 90 150 103.431 150 120 C 150 127.956 146.839 135.587 141.213 141.213 C 135.587 146.839 127.956 150 120 150 C 103.431 150 90 136.568 90 120 C 90 103.432 103.432 90 120 90 Z"/>
+        <path
+            android:name="rect4506"
+            android:fillColor="#000000"
+            android:pathData="M 100 0 L 140 0 L 140 60 L 100 60 Z"/>
+        <path
+            android:name="path4511"
+            android:fillColor="#000000"
+            android:pathData="M 120 105 C 111.716 105 105 111.716 105 120 C 105 128.284 111.716 135 120 135 C 128.284 135 135 128.284 135 120 C 135 111.716 128.284 105 120 105 Z"/>
+    </group>
+</vector>

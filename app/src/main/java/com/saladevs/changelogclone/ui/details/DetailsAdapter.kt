@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.saladevs.changelogclone.databinding.RowDetailsCardDetailedBinding
 import com.saladevs.changelogclone.databinding.RowDetailsCardSimpleBinding
+import com.saladevs.changelogclone.databinding.RowDetailsInstallDateBinding
 import com.saladevs.changelogclone.model.PackageUpdate
 
 class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -34,6 +35,17 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         dataset.endBatchedUpdates()
     }
 
+    var footer: String? = null
+        set(value) {
+            if (field == null) {
+                field = value
+                notifyItemInserted(dataset.size())
+            } else {
+                field = value
+                notifyItemChanged(dataset.size())
+            }
+        }
+
     private fun extractViewTypes(updates: SortedList<PackageUpdate>): List<Int> {
         return MutableList(updates.size()) { updates.get(it) }
                 .foldRight("-1".to(mutableListOf<Int>()), { update, acc ->
@@ -53,6 +65,7 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val layoutInflater = LayoutInflater.from(parent.context)
 
         return when (viewType) {
+            TYPE_FOOTER -> InstallationDateViewHolder(RowDetailsInstallDateBinding.inflate(layoutInflater, parent, false))
             TYPE_SIMPLE, TYPE_ERROR -> SimpleViewHolder(RowDetailsCardSimpleBinding.inflate(layoutInflater, parent, false))
             TYPE_DETAILED -> DetailedViewHolder(RowDetailsCardDetailedBinding.inflate(layoutInflater, parent, false))
             else -> throw IllegalArgumentException("Wrong view type")
@@ -62,23 +75,39 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // Get elements from dataset
-        val update = dataset.get(position)
         val isTop = position == 0
-        val isBot = position == dataset.size() - 1
-        val needsExtraSpacing = !isBot && getItemViewType(position + 1) == TYPE_DETAILED
+        val isBot = false //position == dataset.size() - 1
         when (holder) {
-            is SimpleViewHolder -> holder.bind(update, isTop, isBot, holder.itemViewType == TYPE_ERROR)
-            is DetailedViewHolder -> holder.bind(update, isTop, isBot, needsExtraSpacing)
+            is InstallationDateViewHolder -> holder.bind(footer!!, isTop)
+            is SimpleViewHolder -> {
+                val update = dataset.get(position)
+                holder.bind(update, isTop, isBot, holder.itemViewType == TYPE_ERROR)
+            }
+            is DetailedViewHolder -> {
+                val update = dataset.get(position)
+                val needsExtraSpacing = !isBot && getItemViewType(position + 1) == TYPE_DETAILED
+                holder.bind(update, isTop, isBot, needsExtraSpacing)
+            }
         }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
-        return dataset.size()
+
+        return dataset.size() + if (footer != null) 1 else 0
     }
 
     override fun getItemViewType(position: Int): Int {
+        if (footer != null && position == dataset.size()) return TYPE_FOOTER
         return viewTypes[position]
+    }
+
+    class InstallationDateViewHolder(val binding: RowDetailsInstallDateBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(installationDate: String, top: Boolean) {
+            binding.installationDate = installationDate
+            binding.top = top
+            binding.executePendingBindings()
+        }
     }
 
     class SimpleViewHolder(val binding: RowDetailsCardSimpleBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -104,6 +133,7 @@ class DetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     companion object {
+        const val TYPE_FOOTER = 100
         const val TYPE_DETAILED = 0
         const val TYPE_SIMPLE = 1
         const val TYPE_ERROR = 2

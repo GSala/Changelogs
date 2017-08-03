@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateUtils
 import android.view.*
 import android.widget.CheckBox
 import android.widget.ImageView
@@ -140,6 +141,14 @@ class DetailsFragment() : Fragment(), DetailsMvpView {
 
     override fun showUpdates(updates: List<PackageUpdate>) {
         mAdapter.setData(updates)
+    }
+
+    override fun showInstallationDate(installationTime: Long, isSystemApp: Boolean) {
+        if (isSystemApp) {
+            mAdapter.footer = "Installed as system app"
+        } else {
+            mAdapter.footer = "Installed ${DateUtils.formatDateTime(App.getContext(), installationTime, 0)}"
+        }
     }
 
     override fun setPackageIgnored(ignored: Boolean) {
