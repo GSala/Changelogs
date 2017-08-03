@@ -5,8 +5,6 @@ import com.saladevs.changelogclone.ui.MvpView
 
 interface DetailsMvpView : MvpView {
 
-    fun showEmptyState(b: Boolean)
-
     fun showUpdates(updates: List<PackageUpdate>)
 
     fun showInstallationDate(installationTime: Long, isSystemApp: Boolean)

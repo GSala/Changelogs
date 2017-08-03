@@ -20,17 +20,13 @@ import timber.log.Timber
 
 class ActivityFragment : Fragment(), ActivityMvpView, ActivityAdapter.OnItemClickListener {
 
-    private lateinit var mPresenter: ActivityPresenter
-
-    private lateinit var mEmptyStateView: View
+    private val mPresenter = ActivityPresenter()
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: ActivityAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mPresenter = ActivityPresenter()
 
         setHasOptionsMenu(true)
     }
@@ -39,7 +35,6 @@ class ActivityFragment : Fragment(), ActivityMvpView, ActivityAdapter.OnItemClic
                               savedInstanceState: Bundle?): View? {
         Timber.d("-- onCraeteView --")
         val view = inflater.inflate(R.layout.fragment_activity, container, false)
-        mEmptyStateView = view.findViewById(R.id.emptyStateView)
         mRecyclerView = view.findViewById(recyclerView) as RecyclerView
 
         val mLayoutManager = LinearLayoutManager(context)
@@ -91,10 +86,6 @@ class ActivityFragment : Fragment(), ActivityMvpView, ActivityAdapter.OnItemClic
 
     override fun onItemClick(v: View, packageInfo: PackageInfo) {
         mPresenter.onItemClicked(packageInfo)
-    }
-
-    override fun showEmptyState(b: Boolean) {
-        mEmptyStateView.visibility = if (b) View.VISIBLE else View.GONE
     }
 
     override fun showUpdates(updates: List<PackageUpdate>) {

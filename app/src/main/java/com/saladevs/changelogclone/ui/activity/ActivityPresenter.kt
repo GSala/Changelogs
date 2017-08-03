@@ -6,46 +6,31 @@ import com.saladevs.changelogclone.StylesManager
 import com.saladevs.changelogclone.model.ActivityChangelogStyle
 import com.saladevs.changelogclone.model.PackageUpdate
 import com.saladevs.changelogclone.ui.BasePresenter
-import io.realm.Realm
+import com.saladevs.changelogclone.utils.addTo
 import io.realm.Sort
 import rx.Observable
-import rx.subscriptions.CompositeSubscription
+import timber.log.Timber
 
 internal class ActivityPresenter : BasePresenter<ActivityFragment>() {
-
-    private val mRealm: Realm = Realm.getDefaultInstance()
-    private val mSubscriptions = CompositeSubscription()
 
     override fun attachView(mvpView: ActivityFragment) {
         super.attachView(mvpView)
 
         // Subscribe to Style SharedPreferences changes
-        mSubscriptions.add(StylesManager.activityChangelogStyleObs
-                .subscribe { style -> getMvpView()?.changeChangelogStyle(style!!) })
+        StylesManager.activityChangelogStyleObs
+                .subscribe { style -> mvpView.changeChangelogStyle(style!!) }
+                .addTo(subscriptions)
 
-        val realmObs = mRealm.where(PackageUpdate::class.java)
+        val realmObs = realm.where(PackageUpdate::class.java)
                 .findAllSortedAsync("date", Sort.DESCENDING)
                 .asObservable()
 
         val ignoredObs = AppManager.getIgnoredAppsObservable()
 
-        mSubscriptions.add(
-                Observable.combineLatest(realmObs, ignoredObs,
-                        { results, ignored -> results.filter { !ignored.contains(it.packageName) } })
-                        .subscribe { updates ->
-                            if (updates.isNotEmpty()) {
-                                getMvpView()?.showEmptyState(false)
-                                getMvpView()?.showUpdates(updates)
-                            } else {
-                                getMvpView()?.showEmptyState(true)
-                            }
-                        })
-    }
-
-    override fun detachView() {
-        super.detachView()
-        mSubscriptions.unsubscribe()
-        mRealm.close()
+        Observable.combineLatest(realmObs, ignoredObs,
+                { results, ignored -> results.filter { !ignored.contains(it.packageName) } })
+                .subscribe({ mvpView.showUpdates(it) }, { Timber.e(it) })
+                .addTo(subscriptions)
     }
 
     fun onItemClicked(packageInfo: PackageInfo) {

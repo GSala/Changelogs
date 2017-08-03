@@ -6,13 +6,10 @@ import com.saladevs.changelogclone.ui.BasePresenter
 import com.saladevs.changelogclone.utils.addTo
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import rx.subscriptions.CompositeSubscription
 
 class NavigationPresenter : BasePresenter<NavigationMvpView>() {
 
-    val mSubscriptions = CompositeSubscription()
-
-    override fun attachView(mvpView: NavigationMvpView?) {
+    override fun attachView(mvpView: NavigationMvpView) {
         super.attachView(mvpView)
 
         AppManager.getIgnoredAppsObservable()
@@ -29,15 +26,9 @@ class NavigationPresenter : BasePresenter<NavigationMvpView>() {
                 }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ packages -> getMvpView()?.showNavigationItems(packages) })
-                .addTo(mSubscriptions)
+                .subscribe({ packages -> mvpView.showNavigationItems(packages) })
+                .addTo(subscriptions)
 
-    }
-
-    override fun detachView() {
-        super.detachView()
-
-        mSubscriptions.unsubscribe()
     }
 
     fun onItemClicked(packageInfo: PackageInfo) {

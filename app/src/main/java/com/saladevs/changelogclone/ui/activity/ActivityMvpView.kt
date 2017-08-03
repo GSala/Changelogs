@@ -8,8 +8,6 @@ import com.saladevs.changelogclone.ui.MvpView
 
 interface ActivityMvpView : MvpView {
 
-    fun showEmptyState(b: Boolean)
-
     fun showUpdates(updates: List<PackageUpdate>)
 
     fun changeChangelogStyle(style: ActivityChangelogStyle)

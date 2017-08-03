@@ -5,16 +5,6 @@ import com.saladevs.changelogclone.ui.BasePresenter
 
 class SearchPresenter : BasePresenter<SearchMvpView>() {
 
-    override fun attachView(mvpView: SearchMvpView?) {
-        super.attachView(mvpView)
-
-
-    }
-
-    override fun detachView() {
-        super.detachView()
-    }
-
     fun onSearchQuery(query: CharSequence) {
         if (query.isBlank()) {
             mvpView?.showSearchResults(SearchResult())

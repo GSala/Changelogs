@@ -30,5 +30,6 @@
     <string name="theme_day">Day</string>
     <string name="theme_night">Night</string>
     <string name="theme_auto">Auto</string>
+    <string name="action_toggle_ignore">Toggle ignore</string>
 
 </resources>

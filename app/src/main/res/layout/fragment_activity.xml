@@ -7,18 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.saladevs.changelogclone.ui.activity.ActivityFragment">
 
-    <TextView
-        android:id="@+id/emptyStateView"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="64dp"
-        android:gravity="center"
-        android:lineSpacingExtra="8dp"
-        android:text="@string/empty_state_message"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:visibility="gone" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
