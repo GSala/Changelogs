@@ -6,10 +6,6 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 apply plugin: 'com.jakewharton.hugo'
 
-def keystorePropertiesFile = rootProject.file("/app/keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -31,12 +27,7 @@ android {
     }
 
     signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
+        release
     }
 
     buildTypes {
@@ -108,4 +99,15 @@ dependencies {
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
+}
+
+def keystorePropertiesFile = rootProject.file("app/keystore.properties")
+if (keystorePropertiesFile.exists()) {
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    android.signingConfigs.release.keyAlias = keystoreProperties['keyAlias']
+    android.signingConfigs.release.keyPassword = keystoreProperties['keyPassword']
+    android.signingConfigs.release.storeFile = file(keystoreProperties['storeFile'])
+    android.signingConfigs.release.storePassword = keystoreProperties['storePassword']
 }
